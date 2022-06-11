@@ -13,14 +13,13 @@ class RedirectIfAuthenticated
     private const GUARD_OWNER = 'owners';
     private const GUARD_ADMIN = 'admin';
 
-
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param  \Closure  $next
      * @param  string|null  ...$guards
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return mixed
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
@@ -33,15 +32,15 @@ class RedirectIfAuthenticated
         // }
 
         if(Auth::guard(self::GUARD_USER)->check() && $request->routeIs('user.*')){
-            return redirect(RouteServiceProvider::HOME);
+          return redirect(RouteServiceProvider::HOME);
         }
 
         if(Auth::guard(self::GUARD_OWNER)->check() && $request->routeIs('owner.*')){
-            return redirect(RouteServiceProvider::OWNER_HOME);
+          return redirect(RouteServiceProvider::OWNER_HOME);
         }
 
         if(Auth::guard(self::GUARD_ADMIN)->check() && $request->routeIs('admin.*')){
-            return redirect(RouteServiceProvider::ADMIN_HOME);
+          return redirect(RouteServiceProvider::ADMIN_HOME);
         }
 
         return $next($request);
